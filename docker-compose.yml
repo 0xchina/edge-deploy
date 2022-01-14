@@ -1,5 +1,30 @@
 version: '3.6'
 services:
+  boxserver:
+    container_name: boxserver
+    image: registry.cn-shenzhen.aliyuncs.com/apsu/boxserver
+    # build: ./build/server/.
+    restart: unless-stopped
+    ports:
+    - "4000:4000"
+    environment:
+      - APSU_EDGE_TOKEN=${APSU_EDGE_TOKEN}
+      - PORT=4000
+      - REMOTE_HOST=https://www.kknd.cn/graphql
+      - LOCAL_MQTT=mosquitto
+    volumes:
+    - ./volume/boxserver/data:/usr/src/app/data
+  boxweb:
+    container_name: boxweb
+    image: registry.cn-shenzhen.aliyuncs.com/apsu/boxweb
+    # build: ./build/web/.
+    restart: unless-stopped
+    ports:
+    - "80:3000"
+    environment:
+      - NEXT_PUBLIC_API_ADDRESS=http://boxserver:4000/api
+    volumes:
+    - ./volume/boxweb/data:/usr/src/app/dat
   red:
     container_name: red
     image: registry.cn-shenzhen.aliyuncs.com/apsu/red
@@ -61,7 +86,6 @@ services:
     - ./volume/grafana/log:/var/log/grafana
   influxdb:
     container_name: influxdb
-    # image: "influxdb"
     image: arm32v7/influxdb:latest
     restart: unless-stopped
     ports:
@@ -76,30 +100,4 @@ services:
     volumes:
     - ./volume/influxdb/data:/var/lib/influxdb2 
     - ./volume/influxdb/config:/etc/influxdb2
-  boxserver:
-    container_name: boxserver
-    image: registry.cn-shenzhen.aliyuncs.com/apsu/boxserver
-    # build: ./build/server/.
-    restart: unless-stopped
-    ports:
-    - "4000:4000"
-    # network_mode: "host"
-    environment:
-      - APSU_EDGE_TOKEN=${APSU_EDGE_TOKEN}
-      - PORT=4000
-      - REMOTE_HOST=https://www.kknd.cn/graphql
-      - LOCAL_MQTT=mosquitto
-    volumes:
-    - ./volume/boxserver/data:/usr/src/app/data
-  boxweb:
-    container_name: boxweb
-    image: registry.cn-shenzhen.aliyuncs.com/apsu/boxweb
-    # build: ./build/web/.
-    restart: unless-stopped
-    ports:
-    - "3000:3000"
-    # network_mode: "host"
-    environment:
-      - NEXT_PUBLIC_API_ADDRESS=http://boxserver:4000/api
-    volumes:
-    - ./volume/boxweb/data:/usr/src/app/data
+
