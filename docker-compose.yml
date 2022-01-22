@@ -13,7 +13,8 @@ services:
       - ./volume/postgres/:/var/lib/postgresql/
   mosquitto:
     container_name: mosquitto
-    build: ./mosquitto/.
+    # build: ./mosquitto/.
+    image: registry.cn-shenzhen.aliyuncs.com/apsu/mosquitto
     restart: unless-stopped
     environment:
     - TZ=Asia/Shanghai
@@ -29,27 +30,10 @@ services:
     - ./volume/mosquitto/data:/mosquitto/data
     - ./volume/mosquitto/logs:/mosquitto/logs
     - ./volume/mosquitto/pwfile:/mosquitto/pwfile
-  influxdb:
-      container_name: influxdb
-      # image: "influxdb"
-      image: arm32v7/influxdb:latest
-      restart: unless-stopped
-      ports:
-      - "8086:8086"
-      environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=apsu
-      - DOCKER_INFLUXDB_INIT_PASSWORD=yangpaopao
-      - DOCKER_INFLUXDB_INIT_ORG=my-org
-      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=asfaskjsadfjklasdjf
-      volumes:
-      - ./volume/influxdb/data:/var/lib/influxdb2 
-      - ./volume/influxdb/config:/etc/influxdb2
   boxserver:
       container_name: boxserver
-      # image: registry.cn-shenzhen.aliyuncs.com/apsu/boxserver
-      build: ./server/.
+      image: registry.cn-shenzhen.aliyuncs.com/apsu/boxserver
+      # build: ./server/.
       restart: unless-stopped
       ports:
       - "4000:4000"
@@ -71,8 +55,8 @@ services:
       - influxdb
   boxweb:
       container_name: web
-      # image: registry.cn-shenzhen.aliyuncs.com/apsu/web
-      build: ./web/.
+      image: registry.cn-shenzhen.aliyuncs.com/apsu/boxweb
+      # build: ./web/.
       restart: unless-stopped
       ports:
       - "80:3000"
@@ -81,3 +65,21 @@ services:
       - NEXT_PUBLIC_MQTT_SERVER=http://mosquitto
       depends_on: 
       - boxserver
+  influxdb:
+      container_name: influxdb
+      # image: "influxdb"
+      image: arm32v7/influxdb:latest
+      restart: unless-stopped
+      ports:
+      - "8086:8086"
+      environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=apsu
+      - DOCKER_INFLUXDB_INIT_PASSWORD=yangpaopao
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=asfaskjsadfjklasdjf
+      volumes:
+      - ./volume/influxdb/data:/var/lib/influxdb2 
+      - ./volume/influxdb/config:/etc/influxdb2
+ 
