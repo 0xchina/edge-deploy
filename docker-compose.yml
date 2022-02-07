@@ -1,16 +1,15 @@
 version: "3.9"
 services:
   db:
-    image: postgres
+    image: mongo
     restart: always
     environment:
-      POSTGRES_USER: apsu
-      POSTGRES_PASSWORD: yangpaopao
-      POSTGRES_DB: box
+      MONGO_INITDB_ROOT_USERNAME: apsu
+      MONGO_INITDB_ROOT_PASSWORD: yangpaopao
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - ./volume/postgres/:/var/lib/postgresql/
+      - ./volume/mongo/:/data/db/
   mosquitto:
     container_name: mosquitto
     # build: ./mosquitto/.
@@ -46,6 +45,7 @@ services:
         - PORT=4000
         - REMOTE_HOST=https://www.kknd.cn/graphql
         - MQTT_URL=http://mosquitto
+        - INFLUXDB_URL=http://influxdb:8086
         - DB_URL=postgresql://apsu:yangpaopao@db:5432/box
       volumes:
       - /etc/environment:/usr/src/app/environment
@@ -67,8 +67,7 @@ services:
       - boxserver
   influxdb:
       container_name: influxdb
-      # image: "influxdb"
-      image: arm32v7/influxdb:latest
+      image: "influxdb"
       restart: unless-stopped
       ports:
       - "8086:8086"
