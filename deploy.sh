@@ -13,5 +13,5 @@ if [ -z "$BPWD" ]; then
   exit 666
 fi
 curl http://static.apsu.tech/edge/docker-compose.yml > docker-compose.yml
-docker login -u apsubox -p apsubox123
+docker login -u apsubox -p apsubox123 registry.cn-shenzhen.aliyuncs.com
 docker-compose up -d
