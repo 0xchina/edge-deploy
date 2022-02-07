@@ -13,7 +13,7 @@ services:
   mosquitto:
     container_name: mosquitto
     # build: ./mosquitto/.
-    image: registry.cn-shenzhen.aliyuncs.com/apsu/mosquitto
+    image: registry.cn-shenzhen.aliyuncs.com/apsubox/mosquitto
     restart: unless-stopped
     environment:
     - TZ=Asia/Shanghai
@@ -31,7 +31,7 @@ services:
     - ./volume/mosquitto/pwfile:/mosquitto/pwfile
   boxserver:
       container_name: boxserver
-      image: registry.cn-shenzhen.aliyuncs.com/apsu/boxserver
+      image: registry.cn-shenzhen.aliyuncs.com/apsubox/boxserver
       # build: ./server/.
       restart: unless-stopped
       ports:
@@ -55,7 +55,7 @@ services:
       - influxdb
   boxweb:
       container_name: web
-      image: registry.cn-shenzhen.aliyuncs.com/apsu/boxweb
+      image: registry.cn-shenzhen.aliyuncs.com/apsubox/boxweb
       # build: ./web/.
       restart: unless-stopped
       ports:
