@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  db:
+  mongo:
     image: mongo
     restart: always
     environment:
@@ -46,7 +46,7 @@ services:
         - REMOTE_HOST=https://www.kknd.cn/graphql
         - MQTT_URL=http://mosquitto
         - INFLUXDB_URL=http://influxdb:8086
-        - DB_URL=postgresql://apsu:yangpaopao@db:5432/box
+        - DB_URL=mongodb://apsu:yangpaopao@mongo/box?authSource=admin&w=majority&readPreference=nearest
       volumes:
       - /etc/environment:/usr/src/app/environment
       depends_on: 
