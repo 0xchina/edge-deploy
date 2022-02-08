@@ -83,43 +83,43 @@ services:
       - ./volume/influxdb/data:/var/lib/influxdb2 
       - ./volume/influxdb/config:/etc/influxdb2
   red:
-    container_name: red
-    image: registry.cn-shenzhen.aliyuncs.com/apsubox/red
-    restart: unless-stopped
-    user: "0"
-    environment:
-    - TZ=Asia/Shanghai
-    ports:
-    - "1880:1880"
-    volumes:
-    - ./volume/red/data:/data
-    - ./volume/red/ssh:/root/.ssh
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    devices:
-    - "/dev/ttyAMA0:/dev/ttyAMA0"
-    - "/dev/vcio:/dev/vcio"
-    - "/dev/gpiomem:/dev/gpiomem"
+      container_name: red
+      image: registry.cn-shenzhen.aliyuncs.com/apsubox/red
+      restart: unless-stopped
+      user: "0"
+      environment:
+      - TZ=Asia/Shanghai
+      ports:
+      - "1880:1880"
+      volumes:
+      - ./volume/red/data:/data
+      - ./volume/red/ssh:/root/.ssh
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+      devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
+      - "/dev/vcio:/dev/vcio"
+      - "/dev/gpiomem:/dev/gpiomem"
   portainer:
-    container_name: portainer
-    image: portainer/portainer-ce
-    restart: unless-stopped
-    ports:
-    - "8000:8000"
-    - "9000:9000"
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - ./volume/portainer-ce/data:/data
+      container_name: portainer
+      image: portainer/portainer-ce
+      restart: unless-stopped
+      ports:
+      - "8000:8000"
+      - "9000:9000"
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./volume/portainer-ce/data:/data
   grafana:
-    container_name: grafana
-    image: grafana/grafana
-    restart: unless-stopped
-    user: "0"
-    ports:
-    - "3000:3000"
-    environment:
-    - GF_PATHS_DATA=/var/lib/grafana
-    - GF_PATHS_LOGS=/var/log/grafana
-    volumes:
-    - ./volume/grafana/data:/var/lib/grafana
-    - ./volume/grafana/log:/var/log/grafana
+      container_name: grafana
+      image: grafana/grafana
+      restart: unless-stopped
+      user: "0"
+      ports:
+      - "3000:3000"
+      environment:
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_PATHS_LOGS=/var/log/grafana
+      volumes:
+      - ./volume/grafana/data:/var/lib/grafana
+      - ./volume/grafana/log:/var/log/grafana
