@@ -2,7 +2,7 @@ version: "3.9"
 services:
   mongo:
     container_name: mongo
-    image: mongo:4.4.12
+    image: registry.cn-shenzhen.aliyuncs.com/apsubox/mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: apsu
@@ -51,7 +51,7 @@ services:
       volumes:
       - /etc/environment:/usr/src/app/environment
       depends_on: 
-      - db
+      - mongo
       - mosquitto
       - influxdb
   boxweb:
@@ -68,7 +68,7 @@ services:
       - boxserver
   influxdb:
       container_name: influxdb
-      image: "influxdb"
+      image: "registry.cn-shenzhen.aliyuncs.com/apsubox/influxdb"
       restart: unless-stopped
       ports:
       - "8086:8086"
@@ -102,7 +102,7 @@ services:
       - "/dev/gpiomem:/dev/gpiomem"
   portainer:
       container_name: portainer
-      image: portainer/portainer-ce
+      image: registry.cn-shenzhen.aliyuncs.com/apsubox/portainer
       restart: unless-stopped
       ports:
       - "8000:8000"
@@ -112,7 +112,7 @@ services:
       - ./volume/portainer-ce/data:/data
   grafana:
       container_name: grafana
-      image: grafana/grafana
+      image: registry.cn-shenzhen.aliyuncs.com/apsubox/grafana
       restart: unless-stopped
       user: "0"
       ports:
